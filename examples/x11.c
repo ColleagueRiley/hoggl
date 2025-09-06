@@ -12,12 +12,13 @@ int main(void) {
 
     int s = DefaultScreen(display);
 
+	hoggl_display hogDpy;
+	hoggl_display_init(display, &hogDpy);
+
 	hoggl_format format;
 	hoggl_format_hints formatHints;
 	hoggl_format_hints_copy_default(&formatHints);
-
-	hoggl_format_set_display(&format, (struct Display*)display);
-	hoggl_format_init(&formatHints, &format);
+	hoggl_format_init(&hogDpy, &formatHints, &format);
 
 	XVisualInfo visual = format.visual;
 
@@ -67,5 +68,7 @@ int main(void) {
     }
 
 	hoggl_context_delete(&context);
-    XCloseDisplay(display);
+	hoggl_display_free(&hogDpy);
+
+	XCloseDisplay(display);
  }
